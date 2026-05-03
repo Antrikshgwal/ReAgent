@@ -272,7 +272,9 @@ export const swapEthToUsdcTool = tool(
 export const getEthBalance = tool(
   async ({ chain }) => {
     const adapter = getAdapter(chain as SupportedChain);
-    const balance = await adapter.getEthBalance();
+    const balance =
+      (await (adapter as any).getEthBalance?.()) ??
+      (await (adapter as any).getWalletBalance?.());
 
     return JSON.stringify({
       chain,
